@@ -21,7 +21,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <a class="nav-link" href="/form"">Recipes</a>
-                <a class="nav-link" href="/success">Pantry</a>
+                <a class="nav-link" href="/pantry">Pantry</a>
                 <form class=" d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
@@ -33,27 +33,24 @@
         <div class="container d-block w-50 mx-auto my-3">
             <h1>Recipe Page</h1>
         </div>
-        {% for recipies in one_recipies %}
         <div class="col-sm-4">
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title">Recipe Name: {{recipies.name}}</h5>
-                    <p class="card-text">Recipe Instructions: {{recipies.instructions}}</p>
+                    <h5 class="card-title">Recipe Name: {{one_recipies.name}}</h5>
+                    <p class="card-text">Recipe Instructions: {{one_recipies.instructions}}</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Recipe Nutritional Value: {{recipies.nutrients}} Calories</li>
-                    <li class="list-group-item">Recipe Cook Time: {{recipies.cook}} Minutes</li>
+                    <li class="list-group-item">Recipe Nutritional Value: {{one_recipies.nutrients}} Calories</li>
+                    <li class="list-group-item">Recipe Cook Time: {{one_recipies.cook}} Minutes</li>
                 </ul>
                 <div class="card-body">
-                    {% if session["logged_id"] == recipies.user_id %}
-                    <a  href="/delete/{{recipies.id}}" class="card-link">Delete</a>
-                    <a  href="/change/{{recipies.id}}" class="card-link">Edit</a>
+                    {% if session["logged_id"] == one_recipies.user_id %}
+                    <a  href="/delete/{{one_recipies.id}}" class="card-link">Delete</a>
+                    <a  href="/change/{{one_recipies.id}}" class="card-link">Edit</a>
                     {% endif %}
                 </div>
             </div>
         </div>
-        {% endfor %}
-
 </body>
 
 </html>

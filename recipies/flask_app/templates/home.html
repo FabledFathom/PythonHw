@@ -127,7 +127,7 @@
                             </ul>
                         <div class="card-body">
                             <a href="/pantry/{{recipies.id}}" class="card-link">Veiw</a>
-                            {% if session["logged_id"] == recipies.user_id.id %}
+                            {% if session["logged_id"] == recipies.user_id %}
                             <a  href="/delete/{{recipies.id}}" class="card-link">Delete</a>
                             <a  href="/change/{{recipies.id}}" class="card-link">Edit</a>
                             {% endif %}

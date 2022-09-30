@@ -37,7 +37,7 @@ class Users:
     def find_one_by_id(cls, data):
         query = "SELECT * FROM users WHERE id=%(id)s"
 
-        results = connectToMySQL('recipes').query_db(query, data)
+        results = connectToMySQL('recipesUsers').query_db(query, data)
 
         if len(results) == 0:
             return False

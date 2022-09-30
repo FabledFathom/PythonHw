@@ -19,6 +19,17 @@ def userIn():
     all_recipies = Recipies.get_all()
     return render_template("loggedin.html", all_recipies=all_recipies)
 
+@app.route("/pantry")
+def veiw_own():
+    data = {
+        "users_id" : session["logged_id"]
+    }
+    if "logged_id" not in session:
+        flash("Log in to veiw!")
+        return redirect("/")
+    user_own = Recipies.get_own(data)
+    return render_template("success.html",user_own=user_own)
+
 @app.route("/pantry/<int:id>")
 def veiw_one(id):
     data = {
@@ -28,16 +39,23 @@ def veiw_one(id):
         flash("Log in to veiw!")
         return redirect("/")
     one_recipies = Recipies.veiw_one(data)
-    userid = {
-        "id": Recipies.users_id
-    }
     operator = {
         "id": session["logged_id"]
     }
     this_user = Users.find_one_by_id(operator)
-    posted_by_this_user = Users.find_one_by_id(userid)
     print(one_recipies)
-    return render_template("recipeveiw.html", one_recipies=one_recipies,this_user = this_user, posted_by_this_user = posted_by_this_user)
+    return render_template("recipeveiw.html", one_recipies=one_recipies,this_user = this_user)
+
+@app.route("/success")
+def success():
+    if "logged_id" not in session:
+        
+        return redirect("/")
+
+    user_recipies = Recipies.veiw_one({"id": session["logged_id"]})
+    
+    print(user_recipies)
+    return redirect("/pantry") 
 
 @app.route("/recipies/submit", methods=["post"])
 def submit_recipie():
@@ -69,9 +87,9 @@ def change_info(id):
     data = {
         "id" : id
     }
-    change_recipe = Recipies.veiw_one(data)
-    print(change_recipe)
-    return render_template("edit.html", recipe=change_recipe)
+    change_recipies = Recipies.veiw_one(data)
+    print(change_recipies)
+    return render_template("edit.html", recipies=change_recipies)
 
 @app.route("/edited", methods=["post"])
 def edited():
@@ -110,15 +128,6 @@ def register_user():
     session["logged_id"] = user_id
     return redirect('/success')
 
-@app.route("/success")
-def success():
-    if "logged_id" not in session:
-        
-        return redirect("/")
-
-    user_recipies = Recipies.veiw_one({"id": session["logged_id"]})
-    # print(user_recipies)
-    return render_template("success.html", user_recipies=user_recipies)
 
 @app.route("/logout")
 def logout():

@@ -36,6 +36,28 @@ class Recipies:
         return recipies
 
     @classmethod
+    def get_own(cls, data):
+        query = "SELECT * FROM recipes JOIN users ON recipes.users_id = users.id WHERE users_id = %(users_id)s;"
+        results = connectToMySQL("recipesUsers").query_db(query,data)
+        recipies = []
+        for result in results:
+            one_instance = cls(result)
+
+            user_data = {
+                "id" : result["users.id"],
+                "first_name" : result["first_name"],
+                "last_name" : result["last_name"],
+                "email" : result["email"],
+                "password" : result["password"],
+                "created_at" : result["users.created_at"],
+                "updated_at" : result["users.updated_at"],
+            }
+            one_instance.user_id = Users(user_data)
+            recipies.append(one_instance)
+        print(one_instance)
+        return recipies
+
+    @classmethod
     def save(cls,data):
         query = "INSERT INTO recipes (name, instructions,nutrients,cook ,created_at, updated_at, users_id) VALUE (%(name)s, %(instructions)s,%(nutrients)s,%(cook)s, NOW(), NOW(),%(users_id)s)" 
 
@@ -58,7 +80,7 @@ class Recipies:
 
     @classmethod
     def veiw_one(cls,data):
-        query = "SELECT * FROM recipes WHERE recipes.id = %(id)s;"
+        query = "SELECT * FROM recipes WHERE id = %(id)s;"
         single_recipe_id = connectToMySQL("recipesUsers").query_db(query,data)
         one_instance = cls(single_recipe_id[0])
         return one_instance
